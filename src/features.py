@@ -203,3 +203,52 @@ def create_weather_feature(df):
     )
 
     return df
+# ---------------------------------------------------
+# TRAFFIC DISTANCE INTERACTION
+# ---------------------------------------------------
+
+def create_interaction_feature(df):
+
+    df['traffic_distance'] = (
+        df['traffic_score'] *
+        df['distance_km']
+    )
+
+    return df
+
+
+# ---------------------------------------------------
+# WEEKEND FEATURE
+# ---------------------------------------------------
+
+def create_weekend_feature(df):
+
+    df['Order_Date'] = pd.to_datetime(
+        df['Order_Date'],
+        errors='coerce'
+    )
+
+    df['is_weekend'] = (
+        df['Order_Date']
+        .dt.dayofweek
+        .apply(lambda x: 1 if x >= 5 else 0)
+    )
+
+    return df
+
+
+# ---------------------------------------------------
+# CITY AVG ETA FEATURE
+# ---------------------------------------------------
+
+def create_city_eta_feature(df):
+
+    df['city_avg_eta'] = (
+
+        df.groupby('City')[
+            'Time_taken (min)'
+        ].transform('mean')
+
+    )
+
+    return df

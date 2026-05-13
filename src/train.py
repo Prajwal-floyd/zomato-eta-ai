@@ -1,5 +1,15 @@
 import pandas as pd
 import joblib
+from src.features import (
+    create_distance_feature,
+    create_time_features,
+    create_prep_time_feature,
+    create_traffic_feature,
+    create_weather_feature,
+    create_interaction_feature,
+    create_weekend_feature,
+    create_city_eta_feature
+)
 
 from lightgbm import LGBMRegressor
 
@@ -7,13 +17,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_absolute_error, r2_score
 from sklearn.preprocessing import LabelEncoder
 
-from src.features import (
-    create_distance_feature,
-    create_time_features,
-    create_prep_time_feature,
-    create_traffic_feature,
-    create_weather_feature
-)
 
 
 # ---------------------------------------------------
@@ -56,7 +59,11 @@ df = create_traffic_feature(df)
 
 df = create_weather_feature(df)
 
+df = create_interaction_feature(df)
 
+df = create_weekend_feature(df)
+
+df = create_city_eta_feature(df)
 # ---------------------------------------------------
 # CLEAN NUMERIC COLUMNS
 # ---------------------------------------------------
@@ -142,7 +149,13 @@ features = [
 
     'traffic_score',
 
-    'weather_score'
+    'weather_score',
+
+    'traffic_distance',
+
+    'is_weekend',
+    
+    'city_avg_eta'
 ]
 
 
